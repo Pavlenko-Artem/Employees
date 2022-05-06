@@ -19,7 +19,8 @@ class App extends Component {
                 { name: 'Carl W.', salary: 5000, increase: true, rise: false, id: 3 },
             ],
             term: '',
-            filter: 'all'
+            filter: 'all',
+            salary: ''
         }
         this.maxId = 4;
     }
@@ -32,7 +33,7 @@ class App extends Component {
         })
     }
 
-    addItem = (name, salary) => {
+    onAddItem = (name, salary) => {
         const newItem = {
             name,
             salary,
@@ -57,6 +58,21 @@ class App extends Component {
                 return item;
             })
         }))
+    }
+
+    onStateSalary = (id, value) => {
+        this.setState(({ data }) => ({
+            data: data.map((item) => {
+                if (item.id === id) {
+                    return { ...item, salary: value }
+                }
+                return item;
+            })
+        }))
+    }
+
+    stateSalary = (salary) => {
+        this.setState({ salary })
     }
 
     searchEmp = (items, term) => {
@@ -105,9 +121,10 @@ class App extends Component {
                 <EmployeesList
                     data={visibleData}
                     onDelete={this.deleteItem}
-                    onToggleProp={this.onToggleProp} />
+                    onToggleProp={this.onToggleProp}
+                    onStateSalary={this.onStateSalary} />
                 <EmployeesAddForm
-                    onAdd={this.addItem} />
+                    onAddItem={this.onAddItem} />
             </div>
         );
     }
